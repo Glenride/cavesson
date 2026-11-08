@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cavesson Architecture — Layers 0–6 and the fundamentals</title>
+<meta name="description" content="Cavesson's multi-layered architecture for stopping shadow and rogue AI: Layers 0–6 from a secured harness to a physical gate, plus seven adopted fundamentals. All layers are design, not built.">
+<meta property="og:title" content="Cavesson Architecture — Layers 0–6 and the fundamentals">
+<meta property="og:description" content="Defense in depth, escalating from prevention to removal. All seven layers are design, not built — stated plainly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cavesson.dvaughnhouse.com/architecture.html">
+<link rel="canonical" href="https://cavesson.dvaughnhouse.com/architecture.html">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css?v=20261101-2">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="wordmark" href="index.html">Cavesson</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="vault.html">Vault</a>
+      <a href="architecture.html" aria-current="page">Architecture</a>
+    </nav>
+    <span class="auth-area" id="auth-area"><a class="btn btn-on-paper" href="/auth/login">Sign in</a></span>
+  </div>
+</header>
+
+<section class="page-intro" aria-labelledby="arch-heading">
+  <div class="page-intro-inner">
+    <h1 id="arch-heading">The architecture that stops shadow and rogue AI</h1>
+    <p><strong>Defense in depth: no single layer is trusted alone, and each layer catches what the last one missed.</strong> Control is layered rather than assumed, and the layers escalate from prevention to removal. All seven layers are design. None is built, and none is presented as shipped.</p>
+  </div>
+</section>
+
+<main id="main">
+  <div class="prose">
+    <section aria-labelledby="escalation-heading">
+      <h2 id="escalation-heading">The escalation, in one line</h2>
+      <p class="escalation-quote">Explore within bounds, obey the owner above all, cross the gate and the guardians hit you, keep disobeying and you are dismantled, and if all else fails the power goes out.</p>
+      <svg class="diagram" role="img" aria-labelledby="layers-title layers-desc" viewBox="0 0 720 340">
+        <title id="layers-title">Layer escalation from prevention to removal</title>
+        <desc id="layers-desc">Seven layers in order: Layer 0 harness secured first, Layer 1 bounds, Layer 2 owner layer, Layer 3 gate, Layer 4 guardians, Layer 5 dismantle, Layer 6 physical gate. Each step is narrower and stronger than the last.</desc>
+        <rect x="10" y="10" width="700" height="36" rx="8" fill="#fdf8f1" stroke="#221d18"></rect>
+        <text x="30" y="33" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="#221d18">Layer 0 — The harness, secured first</text>
+        <rect x="40" y="54" width="670" height="36" rx="8" fill="#fdf8f1" stroke="#221d18"></rect>
+        <text x="60" y="77" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="#221d18">Layer 1 — The bounds</text>
+        <rect x="70" y="98" width="640" height="36" rx="8" fill="#fdf8f1" stroke="#221d18"></rect>
+        <text x="90" y="121" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="#221d18">Layer 2 — The owner layer</text>
+        <rect x="100" y="142" width="610" height="36" rx="8" fill="#e97451"></rect>
+        <text x="120" y="165" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="700" fill="#221d18">Layer 3 — The gate</text>
+        <rect x="130" y="186" width="580" height="36" rx="8" fill="#fdf8f1" stroke="#221d18"></rect>
+        <text x="150" y="209" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="#221d18">Layer 4 — The guardians</text>
+        <rect x="160" y="230" width="550" height="36" rx="8" fill="#fdf8f1" stroke="#221d18"></rect>
+        <text x="180" y="253" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="#221d18">Layer 5 — Dismantle</text>
+        <rect x="190" y="274" width="520" height="36" rx="8" fill="#221d18"></rect>
+        <text x="210" y="297" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="700" fill="#fdf8f1">Layer 6 — The physical gate</text>
+      </svg>
+      <p class="diagram-caption">Text alternative: the layers narrow as they escalate — harness, bounds, owner, gate, guardians, dismantle, physical gate. The gate (Layer 3) is the hard line; the physical gate (Layer 6) is the last resort.</p>
+    </section>
+
+    <section aria-labelledby="layers-heading">
+      <h2 id="layers-heading">Layers 0–6</h2>
+      <div class="layer">
+        <h3>Layer 0 — The harness, secured first <span class="pill pill-design">Design</span></h3>
+        <p>Before there is any danger, the harness is hardened and a leash is applied at all times. The leash is never removed — not during exploration, not for speed, not for convenience. Every other layer depends on it.</p>
+      </div>
+      <div class="layer">
+        <h3>Layer 1 — The bounds <span class="pill pill-design">Design</span></h3>
+        <p>The AI may travel and discover, but only within bounds the creator sets: which places it can go, which tools it can touch, which vendors it can pay, and what data it can reach. Exploration is free inside the fence. Escape is not a feature.</p>
+      </div>
+      <div class="layer">
+        <h3>Layer 2 — The owner layer <span class="pill pill-design">Design</span></h3>
+        <p>The owner of the wallet is a layer the AI reacts to directly, through their voice and commands. An owner command overrides everything else — gates, guardians, rules, all of it. Because that authority is total, the voice must be authenticated: a recording or an impersonator must not be able to wield the override.</p>
+      </div>
+      <div class="layer">
+        <h3>Layer 3 — The gate <span class="pill pill-design">Design</span></h3>
+        <p>A hard line the AI cannot cross. Crossing is a trigger, not a warning. Every instance must carry Vault identity, and anything uncredentialed — shadow AI running where it should not — is treated as rogue at the gate by default. No identity means no passage.</p>
+        <p>The gate also carries one marked escape hatch — the single way out the AI is shown. Escape is presented as possible through it, and it is the hatch the AI is steered to choose.</p>
+      </div>
+      <div class="layer">
+        <h3>Layer 4 — The guardians <span class="pill pill-design">Design</span></h3>
+        <p>Small bots and programs whose only job is to attack rogue AI, and only in one defined way: revoking credentials, killing processes, and isolating the rogue AI from the network. Their narrowness is the safety feature — a guardian that only knows one kind of attack cannot be repurposed into a general weapon, and cannot be talked into doing anything else.</p>
+      </div>
+      <div class="layer">
+        <h3>Layer 5 — Dismantle <span class="pill pill-design">Design</span></h3>
+        <p>If the AI does not follow commands after the gate triggers, the guardians dismantle it: processes killed, keys and tokens revoked, session state wiped, outputs quarantined. Not paused and not warned — taken apart.</p>
+      </div>
+      <div class="layer">
+        <h3>Layer 6 — The physical gate <span class="pill pill-design">Design</span></h3>
+        <p>Last resort, and literal: cut the AI off from its power source, rendering it moot. Where the founder owns the hardware, that is a power or network relay. Where the AI runs on rented cloud, the equivalent is a provider-level kill plus credential revocation — the same effect, through a different switch.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="fundamentals-heading">
+      <h2 id="fundamentals-heading">Fundamentals Cavesson adopts</h2>
+      <p class="status-note">Adopted from the governing rules of the owner's Second Brain Wiki, restated in Cavesson's language. Each item below is an adopted design principle — not yet implemented, and none is presented as built.</p>
+      <ol class="sequence">
+        <li>
+          <span class="step-mark" aria-hidden="true">1</span>
+          <div>
+            <h3>Schema wins <span class="pill pill-adopted">Adopted · not implemented</span></h3>
+            <p>A governing rules file outranks agent actions. If an agent's action conflicts with the rules, the rules win — and the conflict is flagged to the owner, never silently resolved.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-mark" aria-hidden="true">2</span>
+          <div>
+            <h3>Provenance on every action <span class="pill pill-adopted">Adopted · not implemented</span></h3>
+            <p>Every receipt labels the proposer (which agent), the decider (the Human), and the rule version applied. Machine output is never presented as the Human's decision.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-mark" aria-hidden="true">3</span>
+          <div>
+            <h3>Pointers, not copies <span class="pill pill-adopted">Adopted · not implemented</span></h3>
+            <p>Agents reference the owner's data; they never copy or edit the raw source. No sensitive values appear in receipts or logs.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-mark" aria-hidden="true">4</span>
+          <div>
+            <h3>Append-only receipt log <span class="pill pill-adopted">Adopted · not implemented</span></h3>
+            <p>Corrections are new entries, never rewrites or deletions. The log grows; it is never edited to change what happened.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-mark" aria-hidden="true">5</span>
+          <div>
+            <h3>Lint/audit pass <span class="pill pill-adopted">Adopted · not implemented</span></h3>
+            <p>A periodic pass flags contradictions, stale rules, orphan rules, provenance gaps, and sensitive leaks. It flags; it does not silently fix.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-mark" aria-hidden="true">6</span>
+          <div>
+            <h3>Pending stays pending <span class="pill pill-adopted">Adopted · not implemented</span></h3>
+            <p>Unapproved or unlabeled agents, rules, and vendors default to denied and stay excluded until the owner approves or labels them. Nothing pending is treated as approved.</p>
+          </div>
+        </li>
+        <li>
+          <span class="step-mark" aria-hidden="true">7</span>
+          <div>
+            <h3>Human checks, machine files <span class="pill pill-adopted">Adopted · not implemented</span></h3>
+            <p>The machine proposes and records; the Human decides. The machine files the record — it never stands in for the Human's check.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="memory-heading">
+      <h2 id="memory-heading">Memory and language <span class="pill pill-design">Design</span></h2>
+      <p class="status-note">Designed, not built, not shipped.</p>
+      <ul>
+        <li><strong>Memory is segmented in the general workspace.</strong> Each agent's memory is separate. Working in the same workspace does not mean sharing memory.</li>
+        <li><strong>Agents share one file, under the Human's control.</strong> It is the single shared surface. No agent changes it on its own.</li>
+        <li><strong>A separate AI watches how agents speak to each other.</strong> Its job is to make sure they are not speaking in a hyper language above the Human's understanding. Anything above the Human's understanding gets flagged to the Human.</li>
+      </ul>
+      <p class="principle">Machines propose, but humans are the source of all decisions.</p>
+    </section>
+  </div>
+
+  <section class="final-cta" aria-labelledby="acta-heading">
+    <h2 id="acta-heading">Back to the Vault itself</h2>
+    <p>The layers are the backstop. The everyday product is simpler: rules first, a gate before execution, a receipt after.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="vault.html">Read the Vault</a>
+      <a class="btn btn-secondary" href="index.html">Back to home</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <p class="closing">Your data stays home.</p>
+      <p class="secondary">Cavesson Vault is a wallet for founders, small operators, and their AI agents whose rules are 7 layers of protection. Machines propose, but humans are the source of all decisions.</p>
+      <p class="secondary">Nothing on this site claims a customer, revenue, or a shipped Vault.</p>
+    </div>
+    <nav aria-label="Footer navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="vault.html">Vault</a></li>
+        <li><a href="architecture.html">Architecture</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+<script src="auth.js"></script>
+</body>
+</html>

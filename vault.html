@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cavesson Vault — House rules, a gate, and a receipt</title>
+<meta name="description" content="Cavesson Vault: the Human sets house rules first, every spend, hire, or signature is checked before execution, and every action leaves an attested receipt naming what was proposed, which rule applied, and what the Human decided.">
+<meta property="og:title" content="Cavesson Vault — House rules, a gate, and a receipt">
+<meta property="og:description" content="House rules first, a gate before execution, and an attested receipt for every action — allowed and stopped. Prototype built in simulated form; not live money, not shipped.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cavesson.dvaughnhouse.com/vault.html">
+<link rel="canonical" href="https://cavesson.dvaughnhouse.com/vault.html">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css?v=20261101-2">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="wordmark" href="index.html">Cavesson</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="vault.html" aria-current="page">Vault</a>
+      <a href="architecture.html">Architecture</a>
+    </nav>
+    <span class="auth-area" id="auth-area"><a class="btn btn-on-paper" href="/auth/login">Sign in</a></span>
+  </div>
+</header>
+
+<section class="page-intro" aria-labelledby="vault-heading">
+  <div class="page-intro-inner">
+    <h1 id="vault-heading">Cavesson Vault</h1>
+    <p><strong>A wallet for founders, small operators, and their AI agents whose rules are 7 layers of protection.</strong> The Vault is the middle ground between supervising every step and trusting the agent outright: rules written first, a gate checked before anything moves, and a receipt after.</p>
+  </div>
+</section>
+
+<main id="main">
+  <div class="prose">
+    <section aria-labelledby="vproblem-heading">
+      <h2 id="vproblem-heading">The problem</h2>
+      <p>An agent that only answers questions cannot lose money. An agent that can pay a vendor, hire help, and sign for work can. A vague instruction, a mistaken tool call, or a prompt that was never meant as permission can spend real money before any Human sees it — because no limit was written down first, and no receipt exists after.</p>
+    </section>
+
+    <section aria-labelledby="rules-heading">
+      <h2 id="rules-heading">House rules, set by the Human first</h2>
+      <p>Before the agent runs, the Human writes down:</p>
+      <ul>
+        <li><strong>A budget.</strong> How much the agent may spend, in total and per action.</li>
+        <li><strong>An allowlist.</strong> What the agent may pay for — for example, research tools only, no contractors, no subscriptions.</li>
+        <li><strong>Hire and sign permissions.</strong> Who or what the agent may hire or sign for, and what it may never hire or sign for.</li>
+      </ul>
+      <p>Unapproved or unlabeled agents, rules, and vendors default to denied and stay excluded until the owner approves or labels them. Nothing pending is treated as approved.</p>
+    </section>
+
+    <section aria-labelledby="gate-heading">
+      <h2 id="gate-heading">A gate, checked before execution</h2>
+      <p>Every proposed spend, hire, or signature is checked against the house rules before it executes. Inside the rules, the agent works freely. Outside them, it is stopped — not warned about afterward — and the stop goes to the Human for a decision: raise the limit, or hold it. Either way, the decision is on record.</p>
+      <p>The gate is also where identity is enforced. Every instance must carry Vault identity, and anything uncredentialed is treated as rogue at the gate by default. No identity means no passage. The layers that back the gate up are described on the <a href="architecture.html">architecture page</a>.</p>
+    </section>
+
+    <section aria-labelledby="receipt-heading">
+      <h2 id="receipt-heading">Attested receipts, for allowed and stopped actions</h2>
+      <p>Every action leaves a receipt naming three things: what was proposed, which rule applied, and what the Human decided. Stopped actions get receipts too — that is the point. A reviewer should be able to read what the Vault stopped without help.</p>
+      <svg class="diagram" role="img" aria-labelledby="receipt-title receipt-desc" viewBox="0 0 720 300">
+        <title id="receipt-title">How a Vault receipt is made</title>
+        <desc id="receipt-desc">An agent proposal goes to the rule check. If it is inside the rules, it executes and leaves an allowed receipt. If it is outside the rules, it is stopped before money moves and leaves a stopped receipt naming the rule it broke, and the Human decides.</desc>
+        <rect x="10" y="110" width="150" height="80" rx="10" fill="#fdf8f1" stroke="#221d18"></rect>
+        <text x="85" y="140" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="#221d18">Agent proposes</text>
+        <text x="85" y="162" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="#221d18">spend, hire, sign</text>
+        <rect x="200" y="110" width="150" height="80" rx="10" fill="#e97451"></rect>
+        <text x="275" y="140" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="#221d18">Checked against</text>
+        <text x="275" y="162" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="15" fill="#221d18">the house rules</text>
+        <rect x="400" y="30" width="300" height="80" rx="10" fill="#ffffff" stroke="#221d18"></rect>
+        <text x="550" y="60" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="700" fill="#2e7d32">Allowed — receipt</text>
+        <text x="550" y="84" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="14" fill="#221d18">Proposal, rule, Human decision</text>
+        <rect x="400" y="190" width="300" height="80" rx="10" fill="#ffffff" stroke="#221d18"></rect>
+        <text x="550" y="220" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="700" fill="#b84a2b">Stopped — receipt</text>
+        <text x="550" y="244" text-anchor="middle" font-family="IBM Plex Sans, sans-serif" font-size="14" fill="#221d18">Proposal, rule broken, Human decision</text>
+        <line x1="160" y1="150" x2="200" y2="150" stroke="#221d18" stroke-width="2"></line>
+        <line x1="350" y1="140" x2="400" y2="70" stroke="#221d18" stroke-width="2"></line>
+        <line x1="350" y1="160" x2="400" y2="230" stroke="#221d18" stroke-width="2"></line>
+      </svg>
+      <p class="diagram-caption">Text alternative: agent proposal → rule check → either an allowed receipt (proposal, rule, Human decision) or a stopped receipt (proposal, rule broken, Human decision). The stopped path never moves money.</p>
+    </section>
+
+    <section aria-labelledby="vfor-heading">
+      <h2 id="vfor-heading">For whom</h2>
+      <p>First, teams building agents that spend, hire, or sign — starting with the first agent teams testing the Vault, then agent-infrastructure teams and small operators running agents on real budgets.</p>
+      <p><strong>Pricing is deliberately open.</strong> No price is set. Pricing is to be validated with the first teams, not asserted here. Revenue, when it comes, follows the wallet and rules service.</p>
+    </section>
+
+    <section aria-labelledby="vstatus-heading">
+      <h2 id="vstatus-heading">Prototype status, stated plainly</h2>
+      <p><span class="pill pill-prototype">Prototype built</span> <span class="status-note">1 November 2026, probe-verified.</span></p>
+      <p>The full Vault prototype was built and probe-verified: a <span class="amount">$40</span> research purchase was allowed, a <span class="amount">$200</span> contractor hire was stopped, and a <span class="amount">$75</span> purchase went to the queue and executed once the Human approved it.</p>
+      <p><strong>Its limits, stated here rather than discovered later:</strong> the money is simulated, everything is in-memory, and it resets on reload. It is not live money and it is not shipped. The layered architecture behind the Vault — Layers 0–6 — remains design, not built, and the seven fundamentals are adopted, not implemented.</p>
+      <p>The 12-week build plan is a target, not a commitment: weeks 1–4, rules engine and wallet, proved by the two-minute demo running end to end; weeks 5–8, attested receipts and first agent teams; weeks 9–10, hardening; weeks 11–12, a live demo and first pricing conversations. If the demo cannot stop an overspend live by week 4, the plan changes in week 5.</p>
+    </section>
+  </div>
+
+  <section class="final-cta" aria-labelledby="vcta-heading">
+    <h2 id="vcta-heading">What backs the gate up</h2>
+    <p>The Vault's everyday work is rules, gate, and receipt. The seven layers behind it exist for the day an agent crosses the gate or goes rogue.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="architecture.html">Read the architecture</a>
+      <a class="btn btn-secondary" href="index.html">Back to home</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <p class="closing">Your data stays home.</p>
+      <p class="secondary">Cavesson Vault is a wallet for founders, small operators, and their AI agents whose rules are 7 layers of protection. Machines propose, but humans are the source of all decisions.</p>
+      <p class="secondary">Nothing on this site claims a customer, revenue, or a shipped Vault.</p>
+    </div>
+    <nav aria-label="Footer navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="vault.html">Vault</a></li>
+        <li><a href="architecture.html">Architecture</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+<script src="auth.js"></script>
+</body>
+</html>
