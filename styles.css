@@ -349,3 +349,16 @@ svg text { line-height: 1.5; }
   .site-nav { margin-left: 0; }
   .sequence > li { grid-template-columns: 1.8rem 1fr; }
 }
+
+/* Journey link strip — the thinned front page's map to the deeper pages */
+.journey {
+  max-width: 70ch;
+  margin: 3rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.75rem;
+}
+.journey a { font-weight: 700; color: var(--ink); text-decoration: none; }
+.journey a:hover { color: var(--sienna); text-decoration: underline; }

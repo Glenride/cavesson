@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cavesson — Honest status</title>
+<meta name="description" content="Status labels mean exactly what they say. Nothing on this site claims a customer, revenue, or a shipped Vault. Cavesson Vault is a prototype: simulated money only, in-memory, resets on reload.">
+<meta property="og:title" content="Cavesson — Honest status">
+<meta property="og:description" content="Status labels mean exactly what they say. Nothing on this site claims a customer, revenue, or a shipped Vault.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cavesson.dvaughnhouse.com/status.html">
+<link rel="canonical" href="https://cavesson.dvaughnhouse.com/status.html">
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="styles.css?v=20261101-2">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="wordmark" href="index.html">Cavesson</a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="vault.html">Vault</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="story.html">Story</a>
+      <a href="status.html" aria-current="page">Status</a>
+    </nav>
+    <span class="auth-area" id="auth-area"><a class="btn btn-on-paper" href="/auth/login">Sign in</a></span>
+  </div>
+</header>
+
+<section class="page-intro" aria-labelledby="status-heading">
+  <div class="page-intro-inner">
+    <h1 id="status-heading">Honest status</h1>
+    <p><strong>Status labels mean exactly what they say.</strong> Nothing on this site claims a customer, revenue, or a shipped Vault.</p>
+  </div>
+</section>
+
+<main id="main">
+  <div class="prose">
+    <section aria-labelledby="status-table-heading">
+      <h2 id="status-table-heading">Where each part stands</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th scope="col">Part</th><th scope="col">Status</th><th scope="col">What that means</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Name and story</td><td><span class="pill pill-built">Locked</span></td><td>Approved and locked 26 October 2026.</td></tr>
+            <tr><td>Harness</td><td><span class="pill pill-built">Built</span></td><td>Your own crew, on your own machines, behind your own lock. Builder, critic, and verifier, with a confirm gate on irreversible actions.</td></tr>
+            <tr><td>Terminal chat layer</td><td><span class="pill pill-tested">Tested</span></td><td>11 offline tests passing, 29 October 2026. A live run is still to prove.</td></tr>
+            <tr><td>Cavesson Vault</td><td><span class="pill pill-prototype">Prototype</span></td><td>Full Vault prototype built 1 November 2026 and probe-verified: <span class="amount">$40</span> research allowed, <span class="amount">$200</span> contractor hire stopped, <span class="amount">$75</span> purchase queued then approved. Simulated money only, in-memory, resets on reload. Not live money, not shipped.</td></tr>
+            <tr><td>Layers 0–6</td><td><span class="pill pill-design">Design</span></td><td>Designed, not built, not shipped.</td></tr>
+            <tr><td>Seven fundamentals</td><td><span class="pill pill-adopted">Adopted · not implemented</span></td><td>Adopted design principles, not yet implemented, none presented as built.</td></tr>
+            <tr><td>Memory and language</td><td><span class="pill pill-design">Design</span></td><td>Designed, not built, not shipped.</td></tr>
+            <tr><td>Two-minute demo</td><td><span class="pill pill-prototype">Prototype walkthrough</span></td><td>Exists as the simulated prototype walkthrough on the <a href="prototype.html">prototype page</a>, not a live-money demo.</td></tr>
+            <tr><td>12-week build plan</td><td><span class="pill pill-planned">Planned</span></td><td>A target, not a commitment: rules engine and wallet, then receipts and first teams, hardening, then a live demo and first pricing conversations.</td></tr>
+            <tr><td>Pricing</td><td><span class="pill pill-planned">Open</span></td><td>No price is set.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="secondary">How to read the labels: Built exists. Tested has been tested with its limits stated. Prototype is built in simulated form with the limits stated. Design is designed but not built. Adopted means adopted as a principle, not implemented. Planned is planned but not started.</p>
+    </section>
+  </div>
+
+  <section class="final-cta" aria-labelledby="cta-heading">
+    <h2 id="cta-heading">Try the prototype yourself</h2>
+    <p>The Vault runs as a simulated prototype: run the two-minute demo and watch it say no to an overspend.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="prototype.html">Try the interactive prototype</a>
+      <a class="btn btn-secondary" href="index.html">Back to home</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <p class="closing">Your data stays home.</p>
+      <p class="secondary">Cavesson Vault is a wallet for founders, small operators, and their AI agents whose rules are 7 layers of protection. Machines propose, but humans are the source of all decisions.</p>
+      <p class="secondary">Nothing on this site claims a customer, revenue, or a shipped Vault.</p>
+    </div>
+    <nav aria-label="Footer navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="vault.html">Vault</a></li>
+        <li><a href="architecture.html">Architecture</a></li>
+        <li><a href="story.html">Story</a></li>
+        <li><a href="status.html">Status</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+<script src="auth.js"></script>
+</body>
+</html>
