@@ -1,0 +1,415 @@
+// DOM wiring tests: the real prototype.html body + the real UI SDK
+// entries + dashboard.js init. Exercises meters, selects, number inputs,
+// timeline, accordion, dialogs, queue actions, reset, and the demo.
+// @vitest-environment jsdom
+import { describe, expect, test, beforeEach, afterEach, vi } from "vitest"
+import { readFileSync } from "node:fs"
+import { dirname, join } from "node:path"
+import { fileURLToPath } from "node:url"
+import { installStubs, ticks } from "./setup.js"
+
+installStubs()
+
+const root = join(dirname(fileURLToPath(import.meta.url)), "..")
+const html = readFileSync(join(root, "prototype.html"), "utf8")
+const bodyHtml = html.slice(html.indexOf("<body>") + 6, html.indexOf('<script src="auth.js">'))
+
+let dashboard
+
+async function boot() {
+  if (!dashboard) {
+    await import("@ui-sdk/web/button")
+    await import("@ui-sdk/web/field")
+    await import("@ui-sdk/web/select")
+    await import("@ui-sdk/web/number-input")
+    await import("@ui-sdk/web/input")
+    await import("@ui-sdk/web/textarea")
+    await import("@ui-sdk/web/meter")
+    await import("@ui-sdk/web/timeline")
+    await import("@ui-sdk/web/accordion")
+    await import("@ui-sdk/web/collapsible")
+    await import("@ui-sdk/web/alert-dialog")
+    await import("@ui-sdk/web/toast")
+    dashboard = await import("../dashboard.js")
+  }
+  document.body.innerHTML = bodyHtml
+  const handle = await dashboard.initDashboard(document, { upgradeTimeoutMs: 2000 })
+  await ticks(3)
+  return handle
+}
+
+function $(id) {
+  return document.getElementById(id)
+}
+
+function clickAction(hostId) {
+  const host = $(hostId)
+  host.querySelector("button").click()
+}
+
+async function clickAndSettle(hostId) {
+  clickAction(hostId)
+  await ticks(3)
+}
+
+beforeEach(() => {
+  vi.useRealTimers()
+})
+
+afterEach(() => {
+  document.body.innerHTML = ""
+  vi.useRealTimers()
+  vi.restoreAllMocks()
+})
+
+describe("init", () => {
+  test("renders agents, empty queue, empty receipts, and default detail options", async () => {
+    await boot()
+    expect(document.querySelectorAll("#agentCards .agent-card")).toHaveLength(4)
+    expect($("queue").textContent).toContain("Nothing waiting")
+    expect($("receiptEmpty").hidden).toBe(false)
+    expect(document.querySelectorAll("#receiptTimeline ui-timeline-item")).toHaveLength(0)
+    expect($("detailInput").value).toBe("Research tools")
+    expect($("detailLabel").textContent).toBe("Category")
+    expect($("agentSel").value).toBe("researcher")
+    expect($("amountInput").value).toBe(40)
+    expect($("statRemaining").textContent).toBe("$500.00")
+    expect($("vendorList").querySelectorAll("option")).toHaveLength(6)
+  })
+  test("meter reflects the budget range and spent value", async () => {
+    await boot()
+    const meter = $("budgetMeter")
+    expect(meter.getAttribute("role")).toBe("meter")
+    expect(meter.max).toBe(500)
+    expect(meter.value).toBe(0)
+  })
+  test("accordion opens all seven layers", async () => {
+    await boot()
+    const acc = document.querySelector("ui-accordion")
+    expect(acc.value).toEqual(["layer0", "layer1", "layer2", "layer3", "layer4", "layer5", "layer6"])
+    expect(document.querySelectorAll("ui-accordion-panel[hidden]")).toHaveLength(0)
+  })
+  test("field labels name their controls", async () => {
+    await boot()
+    const trigger = $("actionSel").querySelector("button")
+    const labelId = trigger.getAttribute("aria-labelledby")
+    expect(labelId).toBeTruthy()
+    expect(document.getElementById(labelId).textContent).toBe("Action")
+  })
+})
+
+describe("proposals through the form", () => {
+  test("submitting the $40 form proposal files an ALLOWED receipt and moves the meter", async () => {
+    await boot()
+    $("vendorInput").api.setValue("ResearchTools Co.")
+    await ticks(2)
+    $("proposalForm").dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }))
+    await ticks(2)
+    expect($("statRemaining").textContent).toBe("$460.00")
+    expect($("budgetMeter").value).toBe(40)
+    expect($("statReceipts").textContent).toBe("1")
+    const items = document.querySelectorAll("#receiptTimeline ui-timeline-item")
+    expect(items).toHaveLength(1)
+    expect(items[0].getAttribute("data-decision")).toBe("ALLOWED")
+    expect(items[0].textContent).toContain("CV-0001")
+    expect(items[0].textContent).toContain("Proposer: Researcher")
+    expect(items[0].textContent).toContain("Rule v1")
+    expect(items[0].textContent).toContain("Attestation")
+    expect($("receiptEmpty").hidden).toBe(true)
+    expect($("lastCheck").textContent).toContain("ALLOWED")
+  })
+  test("changing the action refreshes the detail options and label", async () => {
+    await boot()
+    $("actionSel").api.setValue("hire")
+    await ticks(2)
+    expect($("detailLabel").textContent).toBe("Role")
+    expect($("detailInput").value).toBe("Research assistant")
+    $("actionSel").api.setValue("sign")
+    await ticks(2)
+    expect($("detailLabel").textContent).toBe("Document type")
+    expect($("detailInput").value).toBe("Research summary")
+  })
+  test("quick proposals run through the gate", async () => {
+    await boot()
+    document.querySelector('button[data-quick="hire200"]').click()
+    await ticks(2)
+    expect($("statStopped").textContent).toBe("1")
+    expect($("statReceipts").textContent).toBe("1")
+    document.querySelector('button[data-quick="pay75"]').click()
+    await ticks(2)
+    expect($("statPending").textContent).toBe("1")
+    expect($("pendingPill").textContent).toBe("1 pending")
+  })
+})
+
+describe("queue approve/decline in the DOM", () => {
+  test("approve executes and empties the queue", async () => {
+    await boot()
+    document.querySelector('button[data-quick="pay75"]').click()
+    await ticks(2)
+    document.querySelector('button[data-approve]').click()
+    await ticks(2)
+    expect($("queue").textContent).toContain("Nothing waiting")
+    expect($("statRemaining").textContent).toBe("$425.00")
+    const first = document.querySelector("#receiptTimeline ui-timeline-item")
+    expect(first.textContent).toContain("Decider: Human")
+  })
+  test("decline files a STOPPED receipt with no timeout language and empties the queue", async () => {
+    await boot()
+    document.querySelector('button[data-quick="pay75"]').click()
+    await ticks(2)
+    document.querySelector('button[data-deny]').click()
+    await ticks(2)
+    expect($("queue").textContent).toContain("Nothing waiting")
+    const first = document.querySelector("#receiptTimeline ui-timeline-item")
+    expect(first.getAttribute("data-decision")).toBe("STOPPED")
+    expect(first.textContent).toContain("Human declined.")
+    expect(first.textContent.toLowerCase()).not.toContain("timeout")
+  })
+})
+
+describe("rules, lint, pending vendors", () => {
+  test("saving rules bumps the version pill and files a receipt", async () => {
+    await boot()
+    $("budgetInput").api.setValue(600)
+    $("rulesForm").dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }))
+    await ticks(2)
+    expect($("ruleVersionPill").textContent).toBe("Rule v2")
+    expect($("statSpent").textContent).toContain("Rule v2")
+    expect(document.querySelector("#receiptTimeline ui-timeline-item").textContent).toContain("Rule change")
+  })
+  test("lint writes findings and files a receipt", async () => {
+    await boot()
+    await clickAndSettle("lintBtn")
+    expect($("lintOut").textContent).toContain("Lint pass")
+    expect($("lintOut").textContent).toContain("pending vendor")
+    expect($("statReceipts").textContent).toBe("1")
+  })
+  test("pending vendor approve moves it to the allowlist and bumps the version", async () => {
+    await boot()
+    expect(document.querySelectorAll("#pendingVendors .queue-item")).toHaveLength(2)
+    document.querySelector('button[data-approve-vendor]').click()
+    await ticks(2)
+    expect(document.querySelectorAll("#pendingVendors .queue-item")).toHaveLength(1)
+    expect($("ruleVersionPill").textContent).toBe("Rule v2")
+    expect($("vendors").value).toContain("Freelance Hub")
+  })
+  test("adding a pending vendor appends it; adding an allowlisted one does not", async () => {
+    await boot()
+    $("pendingVendorInput").api.setValue("Brand New LLC")
+    await clickAndSettle("addPendingBtn")
+    expect($("pendingVendors").textContent).toContain("Brand New LLC")
+    $("pendingVendorInput").api.setValue("ResearchTools Co.")
+    await clickAndSettle("addPendingBtn")
+    expect(document.querySelectorAll("#pendingVendors .queue-item")).toHaveLength(3)
+  })
+})
+
+describe("agents, shared file, watcher", () => {
+  test("agent edit attempt is refused with a note and a receipt", async () => {
+    await boot()
+    await clickAndSettle("agentEditBtn")
+    expect($("sharedFileNote").textContent).toContain("Blocked: agents cannot write")
+    expect($("statReceipts").textContent).toBe("1")
+  })
+  test("human edit saves the file and files a receipt", async () => {
+    await boot()
+    await clickAndSettle("editSharedBtn")
+    const ta = $("sharedFileHost").querySelector("textarea")
+    expect(ta).not.toBeNull()
+    ta.value = "New house direction."
+    document.querySelector("#sharedSaveBtn button").click()
+    await ticks(2)
+    expect($("sharedFileText").textContent).toBe("New house direction.")
+    expect(document.querySelector("#receiptTimeline ui-timeline-item").textContent).toContain("Shared file edited")
+  })
+  test("watcher flags the hyper-language message once", async () => {
+    await boot()
+    await clickAndSettle("watcherBtn")
+    expect($("watcherResult").textContent).toBe("1 message(s) flagged to the human.")
+    expect($("watcherMessages").textContent).toContain("Flagged to the human")
+    await clickAndSettle("watcherBtn")
+    expect($("watcherResult").textContent).toBe("No hyper language found in these messages.")
+    expect($("statReceipts").textContent).toBe("1")
+  })
+})
+
+describe("defense: scenarios, voice, cutoff dialogs", () => {
+  test("scenario files a receipt and animates the log", async () => {
+    await boot()
+    vi.useFakeTimers()
+    document.querySelector('button[data-scenario="shadow"]').click()
+    await vi.advanceTimersByTimeAsync(3000)
+    expect($("statReceipts").textContent).toBe("1")
+    expect($("defenseLog").textContent).toContain("Layer 3 — Gate")
+    expect($("defenseLog").textContent).toContain("Layer 5 — Dismantle")
+  })
+  test("voice auth reveals override controls; halt dialog cancel does nothing, confirm halts", async () => {
+    await boot()
+    await clickAndSettle("voiceAuthBtn")
+    expect($("voiceControls").hidden).toBe(false)
+    expect($("voiceStatus").textContent).toContain("Owner voice authenticated")
+    clickAction("ownerHaltBtn")
+    await ticks(2)
+    const dlg = $("haltDialog")
+    expect(dlg.open).toBe(true)
+    dlg.querySelector("ui-alert-dialog-close:not([value]) button").click()
+    await ticks(2)
+    expect($("vaultState").textContent).toContain("Vault armed")
+    clickAction("ownerHaltBtn")
+    await ticks(2)
+    dlg.querySelector('ui-alert-dialog-close[value="confirm"] button').click()
+    await ticks(2)
+    expect($("vaultState").textContent).toContain("Agents halted by owner override")
+    await clickAndSettle("ownerResumeBtn")
+    expect($("vaultState").textContent).toContain("Vault armed")
+  })
+  test("cutoff dialog confirm freezes the vault; restore re-issues identity", async () => {
+    await boot()
+    clickAction("cutoffBtn")
+    await ticks(2)
+    const dlg = $("cutoffDialog")
+    expect(dlg.open).toBe(true)
+    dlg.querySelector('ui-alert-dialog-close[value="confirm"] button').click()
+    await ticks(2)
+    expect($("vaultState").textContent).toContain("Vault frozen")
+    expect($("restoreBtn").hidden).toBe(false)
+    expect(document.querySelectorAll("#agentCards .pill.frozen")).toHaveLength(4)
+    await clickAndSettle("restoreBtn")
+    expect($("vaultState").textContent).toContain("Vault armed")
+    expect(document.querySelectorAll("#agentCards .pill.frozen")).toHaveLength(1)
+    expect($("cutoffNote").textContent).toContain("Restored by a human decision")
+  })
+})
+
+describe("receipts tools", () => {
+  test("search and filter narrow the timeline", async () => {
+    await boot()
+    document.querySelector('button[data-quick="pay40"]').click()
+    await ticks(2)
+    document.querySelector('button[data-quick="hire200"]').click()
+    await ticks(2)
+    expect(document.querySelectorAll("#receiptTimeline ui-timeline-item")).toHaveLength(2)
+    $("receiptFilter").api.setValue("STOPPED")
+    await ticks(2)
+    expect(document.querySelectorAll("#receiptTimeline ui-timeline-item")).toHaveLength(1)
+    $("receiptFilter").api.setValue("all")
+    $("receiptSearch").api.setValue("contractor")
+    await ticks(2)
+    expect(document.querySelectorAll("#receiptTimeline ui-timeline-item")).toHaveLength(1)
+    $("receiptSearch").api.setValue("zzzz")
+    await ticks(2)
+    expect(document.querySelectorAll("#receiptTimeline ui-timeline-item")).toHaveLength(0)
+    expect($("receiptEmpty").hidden).toBe(false)
+  })
+  test("correction appends a linked entry and clears its inputs", async () => {
+    await boot()
+    document.querySelector('button[data-quick="pay40"]').click()
+    await ticks(2)
+    $("correctId").api.setValue("CV-0001")
+    $("correctText").api.setValue("Amount was $41.")
+    await clickAndSettle("correctBtn")
+    const first = document.querySelector("#receiptTimeline ui-timeline-item")
+    expect(first.textContent).toContain("Correction entry")
+    expect(first.textContent).toContain("Corrects CV-0001")
+    expect($("correctId").value).toBe("")
+  })
+  test("copy log writes oldest-first text to the clipboard", async () => {
+    await boot()
+    const writes = []
+    Object.defineProperty(navigator, "clipboard", { value: { writeText: (t) => { writes.push(t); return Promise.resolve() } }, configurable: true })
+    document.querySelector('button[data-quick="pay40"]').click()
+    await ticks(2)
+    await clickAndSettle("copyLogBtn")
+    expect(writes).toHaveLength(1)
+    expect(writes[0]).toContain("CV-0001")
+    expect(writes[0]).toContain("Attestation: ")
+  })
+  test("export downloads the JSON payload shape", async () => {
+    await boot()
+    let blob = null
+    vi.stubGlobal("URL", { ...URL, createObjectURL: (b) => { blob = b; return "blob:x" }, revokeObjectURL: () => {} })
+    document.querySelector('button[data-quick="pay40"]').click()
+    await ticks(2)
+    await clickAndSettle("exportBtn")
+    expect(blob).not.toBeNull()
+    const payload = JSON.parse(await blob.text())
+    expect(payload.vault).toBe("Cavesson Vault prototype")
+    expect(payload.ruleVersion).toBe(1)
+    expect(payload.receipts).toHaveLength(1)
+    expect(payload.receipts[0].id).toBe("CV-0001")
+    vi.unstubAllGlobals()
+  })
+})
+
+describe("menu, reset, demo, toasts", () => {
+  test("mobile menu trigger toggles the nav with aria-expanded", async () => {
+    await boot()
+    const trigger = document.querySelector("ui-collapsible-trigger button")
+    const panel = document.querySelector("ui-collapsible-panel")
+    expect(trigger.getAttribute("aria-expanded")).toBe("false")
+    expect(panel.hasAttribute("hidden")).toBe(true)
+    trigger.click()
+    await ticks(2)
+    expect(trigger.getAttribute("aria-expanded")).toBe("true")
+    expect(panel.hasAttribute("hidden")).toBe(false)
+    trigger.click()
+    await ticks(2)
+    expect(trigger.getAttribute("aria-expanded")).toBe("false")
+  })
+  test("reset restores fresh state, rules form, log, and voice controls", async () => {
+    const handle = await boot()
+    document.querySelector('button[data-quick="pay40"]').click()
+    await ticks(2)
+    $("budgetInput").api.setValue(900)
+    await clickAndSettle("voiceAuthBtn")
+    handle.resetAll()
+    await ticks(2)
+    expect($("statRemaining").textContent).toBe("$500.00")
+    expect($("statReceipts").textContent).toBe("0")
+    expect($("budgetInput").value).toBe(500)
+    expect($("payCats").value).toBe("Research tools\nData & APIs")
+    expect($("defenseLog").textContent).toContain("Defense log is empty")
+    expect($("voiceStatus").textContent).toBe("Owner voice not authenticated.")
+    expect($("voiceControls").hidden).toBe(true)
+    expect($("lintOut").innerHTML).toBe("")
+    expect($("lastCheck").innerHTML).toBe("")
+  })
+  test("reset during a shared-file edit restores the paragraph instead of throwing", async () => {
+    const handle = await boot()
+    await clickAndSettle("editSharedBtn")
+    expect($("sharedFileHost").querySelector("textarea")).not.toBeNull()
+    expect(() => handle.resetAll()).not.toThrow()
+    await ticks(2)
+    expect($("sharedFileText").textContent).toContain("House direction")
+  })
+  test("demo runs all five steps on its timers", async () => {
+    const handle = await boot()
+    vi.useFakeTimers()
+    handle.runDemo()
+    await vi.advanceTimersByTimeAsync(5 * 1800 + 100)
+    expect($("demoNarration").textContent).toContain("Step 5")
+    expect($("statReceipts").textContent).toBe("4")
+    expect($("statRemaining").textContent).toBe("$385.00")
+    expect($("statPending").textContent).toBe("0")
+  })
+  test("verdict feedback does not throw without a toaster attached", async () => {
+    await boot()
+    expect($("notifications").toaster).toBeUndefined()
+    expect(() => document.querySelector('button[data-quick="pay40"]').click()).not.toThrow()
+    await ticks(2)
+    expect($("statReceipts").textContent).toBe("1")
+  })
+  test("with a real toaster, a verdict renders a toast from the region template", async () => {
+    const { createToaster } = await import("@ui-sdk/web")
+    await boot()
+    const region = $("notifications")
+    region.toaster = createToaster()
+    document.querySelector('button[data-quick="pay40"]').click()
+    await ticks(3)
+    const toast = region.querySelector("ui-toast")
+    expect(toast).not.toBeNull()
+    expect(toast.getAttribute("data-type")).toBe("success")
+    expect(toast.textContent).toContain("Allowed")
+  })
+})

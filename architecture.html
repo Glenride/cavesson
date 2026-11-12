@@ -12,19 +12,26 @@
 <link rel="canonical" href="https://cavesson.dvaughnhouse.com/architecture.html">
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="stylesheet" href="styles.css?v=20261101-2">
+<script type="module" src="assets/ui-sdk/web.js"></script>
+<script type="module" src="site.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-header">
   <div class="site-header-inner">
     <a class="wordmark" href="index.html">Cavesson</a>
-    <nav class="site-nav" aria-label="Main navigation">
-      <a href="index.html">Home</a>
-      <a href="vault.html">Vault</a>
-      <a href="architecture.html" aria-current="page">Architecture</a>
-      <a href="story.html">Story</a>
-      <a href="status.html">Status</a>
-    </nav>
+    <ui-collapsible class="site-nav-collapsible">
+      <ui-collapsible-trigger><button type="button" class="menu-button" aria-label="Menu" aria-expanded="false"><svg aria-hidden="true" focusable="false" viewBox="0 0 20 16" width="20" height="16"><rect x="0" y="0" width="20" height="2" fill="currentColor"></rect><rect x="0" y="7" width="20" height="2" fill="currentColor"></rect><rect x="0" y="14" width="20" height="2" fill="currentColor"></rect></svg></button></ui-collapsible-trigger>
+      <ui-collapsible-panel hidden>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="index.html">Home</a>
+          <a href="vault.html">Vault</a>
+          <a href="architecture.html" aria-current="page">Architecture</a>
+          <a href="story.html">Story</a>
+          <a href="status.html">Status</a>
+        </nav>
+      </ui-collapsible-panel>
+    </ui-collapsible>
     <span class="auth-area" id="auth-area"><a class="btn btn-on-paper" href="/auth/login">Sign in</a></span>
   </div>
 </header>
@@ -167,8 +174,8 @@
     <h2 id="acta-heading">Back to the Vault itself</h2>
     <p>The layers are the backstop. The everyday product is simpler: rules first, a gate before execution, a receipt after.</p>
     <div class="btn-row">
-      <a class="btn btn-primary" href="vault.html">Read the Vault</a>
-      <a class="btn btn-secondary" href="index.html">Back to home</a>
+      <ui-button><a class="btn btn-primary" href="vault.html">Read the Vault</a></ui-button>
+      <ui-button><a class="btn btn-secondary" href="index.html">Back to home</a></ui-button>
     </div>
   </section>
 </main>
