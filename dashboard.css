@@ -359,7 +359,11 @@ section.panel .btn.small { padding: 0.35rem 0.7rem; font-size: 0.88rem; }
   [data-slot="timeline-item"][data-last] [data-slot="timeline-connector"] { display: none; }
   [data-slot="timeline-title"] { font-weight: 700; font-size: 0.98rem; grid-column: 2; }
   [data-slot="timeline-title"] .pill { margin-right: 0.35rem; }
-  [data-slot="timeline-time"] { grid-column: 2; font-size: 0.85rem; color: var(--secondary); }
+  /* Time: the SDK redirects the time slot's attributes to the inner <time>
+     (target: :scope > time), so data-slot never lands on the grid item.
+     Without the tag selector the timestamp auto-places into the 1.1rem
+     marker column and overlaps the description. */
+  [data-slot="timeline-time"], ui-timeline-time { grid-column: 2; font-size: 0.85rem; color: var(--secondary); white-space: nowrap; }
   [data-slot="timeline-description"] { grid-column: 2; font-size: 0.94rem; margin-top: 0.15rem; }
 
   /* Accordion (defense layers): the trigger slot sits on the button. */
