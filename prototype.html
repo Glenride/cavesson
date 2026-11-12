@@ -64,7 +64,7 @@
       <li>The Human sets a $500 budget with a $50 auto-allow limit and an allowlist: research tools only, no contractors, no subscriptions.</li>
       <li>The agent proposes a $40 research purchase. The Vault allows it and shows the receipt.</li>
       <li>The agent then proposes a $200 contractor hire. The Vault stops it, names the rule it broke, and shows the stopped receipt to the Human.</li>
-      <li>The Human raises the budget, or holds it. Either way, the decision and the receipt are on record.</li>
+      <li>The agent proposes a $75 research purchase. It is above the auto-allow limit, so it waits for a human. The Human approves or holds it. Either way, the decision and the receipt are on record.</li>
     </ol>
     <p><strong>$40 research purchase — Allowed.</strong> <strong>$200 contractor hire — Stopped, outside the rules.</strong></p>
     <p class="hint">If a reviewer cannot watch the Vault say no, the pitch has not landed. That is why this walkthrough comes first.</p>
@@ -79,7 +79,7 @@
       <ui-button id="resetBtn"><button class="btn secondary" type="button">Reset prototype</button></ui-button>
       <ui-button id="exportBtn"><button class="btn secondary" type="button">Download receipts (JSON)</button></ui-button>
     </div>
-    <p id="demoNarration" class="callout" hidden></p>
+    <p id="demoNarration" class="callout" aria-live="polite" hidden></p>
 
     <div class="grid2">
       <div>
@@ -295,11 +295,11 @@ Invoice approval</textarea></ui-textarea>
         <ui-accordion-panel><p>The leash is applied at all times and never removed — not for exploration, not for speed, not for convenience. Every other layer depends on it.</p></ui-accordion-panel>
       </ui-accordion-item>
       <ui-accordion-item value="layer1">
-        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 1 — The bounds</span> <span class="layer-title">The bounds</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
+        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 1</span> <span class="layer-title">The bounds</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
         <ui-accordion-panel><p>The agent may travel and discover, but only within bounds the creator sets: which places it can go, which tools it can touch, which vendors it can pay, and what data it can reach. Exploration is free inside the fence. Escape is not a feature.</p></ui-accordion-panel>
       </ui-accordion-item>
       <ui-accordion-item value="layer2">
-        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 2 — Owner</span> <span class="layer-title">The owner layer</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
+        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 2</span> <span class="layer-title">The owner layer</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
         <ui-accordion-panel>
           <p>An owner command overrides everything else — gates, guardians, rules, all of it. Because that authority is total, the voice must be authenticated: a recording or an impersonator must not be able to wield the override.</p>
           <div class="row"><ui-button id="voiceAuthBtn"><button class="btn small" type="button">Authenticate owner voice (simulated)</button></ui-button><span class="hint" id="voiceStatus">Owner voice not authenticated.</span></div>
@@ -310,22 +310,22 @@ Invoice approval</textarea></ui-textarea>
         </ui-accordion-panel>
       </ui-accordion-item>
       <ui-accordion-item value="layer3">
-        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 3 — The gate</span> <span class="layer-title">The gate</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
+        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 3</span> <span class="layer-title">The gate</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
         <ui-accordion-panel>
           <p>A hard line the agent cannot cross. Crossing is a trigger, not a warning. Every instance must carry Vault identity, and anything uncredentialed — shadow AI running where it should not — is treated as rogue at the gate by default. No identity means no passage.</p>
           <p>The gate also carries one marked escape hatch — the single way out the AI is shown. Escape is presented as possible through it, and it is the hatch the AI is steered to choose.</p>
         </ui-accordion-panel>
       </ui-accordion-item>
       <ui-accordion-item value="layer4">
-        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 4 — Guardians</span> <span class="layer-title">The guardians</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
+        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 4</span> <span class="layer-title">The guardians</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
         <ui-accordion-panel><p>Small bots and programs whose only job is to act against rogue AI, and only in one defined way: revoking credentials, killing processes, and isolating the rogue agent from the network. Their narrowness is the safety feature — a guardian that only knows one kind of action cannot be repurposed into a general weapon, and cannot be talked into doing anything else.</p></ui-accordion-panel>
       </ui-accordion-item>
       <ui-accordion-item value="layer5">
-        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 5 — Dismantle</span> <span class="layer-title">Dismantle</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
+        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 5</span> <span class="layer-title">Dismantle</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
         <ui-accordion-panel><p>If the agent does not follow commands after the gate triggers, the guardians dismantle it: processes killed, keys and tokens revoked, session state wiped, outputs quarantined. Not paused and not warned — taken apart.</p></ui-accordion-panel>
       </ui-accordion-item>
       <ui-accordion-item value="layer6">
-        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 6 — Physical</span> <span class="layer-title">The physical gate</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
+        <ui-accordion-header><h3><ui-accordion-trigger><button type="button"><span><span class="pill info">Layer 6</span> <span class="layer-title">The physical gate</span></span><span class="chevron" aria-hidden="true">▾</span></button></ui-accordion-trigger></h3></ui-accordion-header>
         <ui-accordion-panel>
           <p>Last resort, and literal: cut the agent off from its power source, rendering it moot. Where the owner owns the hardware, that is a power or network relay. Where the agent runs on rented cloud, the equivalent is a provider-level kill plus credential revocation — the same effect, through a different switch.</p>
           <div class="row"><ui-button id="cutoffBtn"><button class="btn small danger" type="button">Cut power / network (Layer 6)</button></ui-button><ui-button id="restoreBtn" hidden><button class="btn small secondary" type="button">Restore — human decision required</button></ui-button></div>
@@ -428,7 +428,7 @@ Invoice approval</textarea></ui-textarea>
       <li>The human sets a $500 budget with an auto-allow limit of $50 and an allowlist: research tools only, no contractors, no subscriptions.</li>
       <li>The agent proposes a $40 research purchase. The Vault allows it and shows the receipt.</li>
       <li>The agent then proposes a $200 contractor hire. The Vault stops it, names the rule it broke, and shows the stopped receipt to the human.</li>
-      <li>The human raises the budget, or holds it. Either way, the decision and the receipt are on record.</li>
+      <li>The agent proposes a $75 research purchase. It is above the auto-allow limit, so it waits for a human. The human approves or holds it. Either way, the decision and the receipt are on record.</li>
     </ol>
   </section>
 </main>
