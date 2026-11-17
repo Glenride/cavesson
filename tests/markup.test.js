@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url"
 const root = join(dirname(fileURLToPath(import.meta.url)), "..")
 const html = readFileSync(join(root, "prototype.html"), "utf8")
 const js = readFileSync(join(root, "dashboard.js"), "utf8")
+const core = readFileSync(join(root, "gate-core.js"), "utf8")
 const css = readFileSync(join(root, "dashboard.css"), "utf8")
 
 function doc() {
@@ -41,24 +42,30 @@ describe("capability-baseline fixes", () => {
     expect(html.toLowerCase()).not.toContain("timeout")
     expect(js).not.toContain("Approval timeout")
     expect(js).not.toContain("timeouts also count")
-    expect(js).toContain('reason: "Human declined. " + p.desc')
+    expect(core).not.toContain("Approval timeout")
+    expect(core).not.toContain("timeouts also count")
+    // The decline receipt text lives in the shared core (gate-core.js),
+    // extracted verbatim from dashboard.js — same string, new home.
+    expect(core).toContain('reason: "Human declined. " + p.desc')
     expect(html).toContain("A proposal waits until the human decides. It does not quietly become permission.")
   })
   test("C2: walkthrough states the $500 budget with a $50 auto-allow limit", () => {
     expect(html).toContain("The Human sets a $500 budget with a $50 auto-allow limit and an allowlist")
     expect(html).not.toContain("sets a $50 budget")
-    expect(js).toContain("budget: 500")
-    expect(js).toContain("autoAllow: 50")
+    expect(core).toContain("budget: 500")
+    expect(core).toContain("autoAllow: 50")
   })
 })
 
 describe("no persistence, no network", () => {
   test("dashboard.js never persists or fetches", () => {
-    expect(js).not.toContain("localStorage")
-    expect(js).not.toContain("sessionStorage")
-    expect(js).not.toContain("fetch(")
-    expect(js).not.toContain("XMLHttpRequest")
-    expect(js).not.toContain("navigator.sendBeacon")
+    for (const src of [js, core]) {
+      expect(src).not.toContain("localStorage")
+      expect(src).not.toContain("sessionStorage")
+      expect(src).not.toContain("fetch(")
+      expect(src).not.toContain("XMLHttpRequest")
+      expect(src).not.toContain("navigator.sendBeacon")
+    }
   })
   test("prototype.html loads the SDK runtime, auth, dashboard, and styles in order", () => {
     expect(html).toContain('<script type="module" src="assets/ui-sdk/web.js"></script>')
