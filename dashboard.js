@@ -405,7 +405,7 @@ function buildExport(state, exportedAt) {
 
 function buildCopyText(state) {
   return state.receipts.slice().reverse().map(function (r) {
-    return [r.id, r.ts, r.decision, r.action, money(r.amount), r.vendor, "Proposer: " + r.proposer, "Decider: " + r.decider, "Rule v" + r.ruleVersion, "Attestation: " + r.hash, r.reason].join(" | ")
+    return [r.id, r.ts, r.decision, r.action, money(r.amount), r.vendor, "Proposer: " + r.proposer, "Decider: " + r.decider, "Rule v" + r.ruleVersion, "Checksum: " + r.hash, r.reason].join(" | ")
   }).join("\n")
 }
 
@@ -625,7 +625,7 @@ function initDashboard(doc, opts) {
     if (!timeline) return
     timeline.innerHTML = rows.map(function (r) {
       var pill = r.decision === "ALLOWED" ? "ok" : r.decision === "PENDING" ? "warn" : "bad"
-      var meta = "Proposer: " + esc(r.proposer) + " · Decider: " + esc(r.decider) + " · Rule v" + r.ruleVersion + " · Attestation <code>" + esc(r.hash) + "</code>" + (r.corrects ? " · Corrects " + esc(r.corrects) : "")
+      var meta = "Proposer: " + esc(r.proposer) + " · Decider: " + esc(r.decider) + " · Rule v" + r.ruleVersion + " · Checksum <code>" + esc(r.hash) + "</code>" + (r.corrects ? " · Corrects " + esc(r.corrects) : "")
       return '<ui-timeline-item value="' + esc(r.id) + '" data-decision="' + r.decision + '"><ui-timeline-marker></ui-timeline-marker><ui-timeline-connector></ui-timeline-connector><ui-timeline-title><span class="pill ' + pill + '">' + r.decision + "</span> " + esc(r.id) + " — " + esc(r.action) + " — " + money(r.amount) + " · " + esc(r.vendor) + "</ui-timeline-title><ui-timeline-time><time>" + esc(r.ts) + "</time></ui-timeline-time><ui-timeline-description>" + esc(r.reason) + '<span class="receipt-meta">' + meta + "</span></ui-timeline-description></ui-timeline-item>"
     }).join("")
   }

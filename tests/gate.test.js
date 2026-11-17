@@ -385,7 +385,7 @@ describe("corrections, export, copy, filter", () => {
     expect(buildCopyText(s)).toBe("")
     submitProposal(s, { ...pay40 }, { ts: TS })
     const text = buildCopyText(s)
-    expect(text).toContain("CV-0001 | " + TS + " | ALLOWED | Pay · Research tools | $40.00 | ResearchTools Co. | Proposer: Researcher | Decider: Vault rules (v1) | Rule v1 | Attestation: ")
+    expect(text).toContain("CV-0001 | " + TS + " | ALLOWED | Pay · Research tools | $40.00 | ResearchTools Co. | Proposer: Researcher | Decider: Vault rules (v1) | Rule v1 | Checksum: ")
   })
   test("filterReceipts honors decision, DECIDED, and search", () => {
     const s = createVaultState()

@@ -114,7 +114,7 @@ describe("proposals through the form", () => {
     expect(items[0].textContent).toContain("CV-0001")
     expect(items[0].textContent).toContain("Proposer: Researcher")
     expect(items[0].textContent).toContain("Rule v1")
-    expect(items[0].textContent).toContain("Attestation")
+    expect(items[0].textContent).toContain("Checksum")
     expect($("receiptEmpty").hidden).toBe(true)
     expect($("lastCheck").textContent).toContain("ALLOWED")
   })
@@ -323,7 +323,7 @@ describe("receipts tools", () => {
     await clickAndSettle("copyLogBtn")
     expect(writes).toHaveLength(1)
     expect(writes[0]).toContain("CV-0001")
-    expect(writes[0]).toContain("Attestation: ")
+    expect(writes[0]).toContain("Checksum: ")
   })
   test("export downloads the JSON payload shape", async () => {
     await boot()
